@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import Button
+from tethys_sdk.services import ensure_oauth2
 
-@login_required()
+
+@ensure_oauth2('UITPlus')
 def home(request):
     """
     Controller for the app home page.
