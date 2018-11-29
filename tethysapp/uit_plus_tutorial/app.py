@@ -1,4 +1,5 @@
 from tethys_sdk.base import TethysAppBase, url_map_maker
+from tethys_sdk.app_settings import CustomSetting
 
 
 class UitPlusTutorial(TethysAppBase):
@@ -17,6 +18,8 @@ class UitPlusTutorial(TethysAppBase):
     enable_feedback = False
     feedback_emails = []
 
+    PROVIDER_NAME = 'UITPlus'
+
     def url_maps(self):
         """
         Add controllers
@@ -29,6 +32,31 @@ class UitPlusTutorial(TethysAppBase):
                 url='uit-plus-tutorial',
                 controller='uit_plus_tutorial.controllers.home'
             ),
+            UrlMap(
+                name='run_job',
+                url='uit-plus-tutorial/run-job',
+                controller='uit_plus_tutorial.controllers.run_job'
+            ),
+            UrlMap(
+                name='status',
+                url='uit-plus-tutorial/status',
+                controller='uit_plus_tutorial.controllers.status'
+            ),
         )
 
         return url_maps
+
+    def custom_settings(self):
+        """
+        Example custom_settings method.
+        """
+        custom_settings = (
+            CustomSetting(
+                name='project_id',
+                type=CustomSetting.TYPE_STRING,
+                description='Project ID on the UIT supercomputing resources.',
+                required=True
+            ),
+        )
+
+        return custom_settings

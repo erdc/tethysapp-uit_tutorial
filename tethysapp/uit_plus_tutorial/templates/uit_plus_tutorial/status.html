@@ -1,0 +1,7 @@
+{% extends "uit_plus_tutorial/base.html" %}
+{% load staticfiles tethys_gizmos %}
+
+{% block app_content %}
+  <h2>Jobs Status</h2>
+  {% gizmo jobs_table %}
+{% endblock %}
