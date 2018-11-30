@@ -34,10 +34,6 @@ def run_job(request):
     """
     Controller that creates and submits a UIT job.
     """
-    # Get Token from Social Auth
-    social = request.user.social_auth.get(provider=app.PROVIDER_NAME)
-    token = social.extra_data['access_token']
-
     # Get Needed App Settings
     project_id = app.get_custom_setting('project_id')
 
@@ -62,15 +58,14 @@ def run_job(request):
         processes_per_node=1,
         queue='debug',
         max_time=dt.timedelta(minutes=5),
+        max_cleanup_time=dt.timedelta(minutes=5),
         job_script=job_script,
         transfer_input_files=[test_job_in,],
         transfer_output_files=['test_job.out']
     )
 
-    # client = job.get_client(token=token)
-    job._execute(token)
+    job.execute()
 
-    import pdb; pdb.set_trace()
     return redirect(reverse('uit_plus_tutorial:status'))
 
 
