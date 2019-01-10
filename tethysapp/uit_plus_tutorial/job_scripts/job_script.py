@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 with open('test_job.in', 'r') as f:
     input = f.read().strip()
