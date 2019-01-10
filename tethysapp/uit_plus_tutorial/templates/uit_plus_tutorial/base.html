@@ -17,6 +17,15 @@
   <li {% if request.path == '/apps/uit-plus-tutorial/' %}class="active"{% endif %}><a href="{% url 'uit_plus_tutorial:home' %}">Home</a></li>
   <li {% if 'status' in request.path %}class="active"{% endif %}><a href="{% url 'uit_plus_tutorial:status' %}">Jobs Status</a></li>
 {% endblock %}
+{% if messages %}
+<div id="messagebox">
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
 
 {% block app_content %}
 {% endblock %}
