@@ -1,5 +1,6 @@
 import os
 import datetime as dt
+from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from tethys_sdk.gizmos import Button, JobsTable
 from tethys_sdk.services import ensure_oauth2
@@ -60,11 +61,15 @@ def run_job(request):
         max_time=dt.timedelta(minutes=5),
         max_cleanup_time=dt.timedelta(minutes=5),
         job_script=job_script,
-        transfer_input_files=[test_job_in,],
+        transfer_input_files=[test_job_in, ],
         transfer_output_files=['test_job.out']
     )
-
-    job.execute()
+    try:
+        job.execute()
+    except RuntimeError as e:
+        messages.add_message(request, messages.ERROR, 'Failed to Run Job: {}'.format(e))
+        job.delete()
+        return redirect(reverse('uit_plus_tutorial:home'))
 
     return redirect(reverse('uit_plus_tutorial:status'))
 
