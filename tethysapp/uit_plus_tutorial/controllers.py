@@ -86,11 +86,12 @@ def status(request):
     jobs_table = JobsTable(
         jobs=jobs,
         column_fields=('id', 'name', 'description', 'creation_time'),
-        hover=True,
-        striped=False,
+        run_btn=False,
+        hover=False,
+        striped=True,
         bordered=False,
         condensed=False,
-        refresh_interval=1000,
+        refresh_interval=5000,
         delete_btn=True,
     )
 
