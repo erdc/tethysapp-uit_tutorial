@@ -8,6 +8,18 @@
 {% endblock %}
 
 {% block app_content %}
+<script type="text/javascript">
+    function update_next_button(btn) {
+        loader =
+            '<p>Submitting Job</p>' +
+            '<div class="progress" style="margin-bottom: 0;">' +
+                '<div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" title="Submitted" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">' +
+                    '<span class="sr-only">100% Complete</span>' +
+                '</div>' +
+            '</div>';
+        $(btn).parent().html(loader);
+    }
+</script>
   <h1>Create UIT Plus Job</h1>
-  {% gizmo next_button %}
+  <div>{% gizmo next_button %}</div>
 {% endblock %}

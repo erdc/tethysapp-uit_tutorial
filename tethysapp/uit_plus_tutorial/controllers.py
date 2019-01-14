@@ -18,9 +18,10 @@ def home(request):
         name='next-button',
         href=reverse('uit_plus_tutorial:run_job'),
         attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Submit Job'
+            'data-toggle': 'tooltip',
+            'data-placement': 'top',
+            'title': 'Submit Job',
+            'onclick': 'update_next_button(this);'
         }
     )
 
