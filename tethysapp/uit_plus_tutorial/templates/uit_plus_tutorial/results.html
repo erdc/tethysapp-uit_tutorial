@@ -1,0 +1,68 @@
+{% extends "uit_plus_tutorial/base.html" %}
+{% load staticfiles tethys_gizmos %}
+
+{% load tethys_gizmos %}
+
+{% block title %}- Results{% endblock %}
+
+{% block global_scripts %}
+    {{ block.super }}
+    {% gizmo_dependencies global_js %}
+{% endblock %}
+
+{% block app_content %}
+<h1>Results for job #{{ job.id }}: {{ job.name }}</h1>
+{% for filename,output in results.items %}
+    <style>#output-{{ filename|slugify }}:after { content: "{{ filename }}"; }</style>
+    <div id="output-{{ filename|slugify }}" class="output-result">
+        <div class="output-text"><pre>{{ output }}</pre></div>
+    </div>
+{% endfor %}
+
+{% endblock %}
+
+{% block app_actions %}
+  {% gizmo home_button %}
+  {% gizmo jobs_button %}
+{% endblock %}
+
+{% block scripts %}
+  {% gizmo_dependencies css %}
+	{{ block.super }}
+  {% gizmo_dependencies js %}
+{% endblock %}
+
+{% block styles %}
+  {{ block.super }}
+  <style>
+      .output-result {
+          position: relative;
+          padding: 40px 20px 20px 20px;
+          margin: 20px 0;
+          border: 1px solid #dddddd;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          background-color: #fcfcfc;
+        }
+        .code {
+          background-color: #F5F2F0;
+        }
+        .output-result:after {
+          position: absolute;
+          top: -1px;
+          left: -1px;
+          padding: 3px 7px;
+          font-size: 10pt;
+          font-weight: bold;
+          background-color: #efedea;
+          border: 1px solid #dddddd;
+          -webkit-border-radius: 5px 0 5px 0;
+          -moz-border-radius: 5px 0 5px 0;
+          border-radius: 5px 0 5px 0;
+        }
+        pre {
+          border: none;
+        }
+  </style>
+{% endblock %}

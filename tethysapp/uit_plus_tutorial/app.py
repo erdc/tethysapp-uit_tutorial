@@ -42,6 +42,11 @@ class UitPlusTutorial(TethysAppBase):
                 url='uit-plus-tutorial/status',
                 controller='uit_plus_tutorial.controllers.status'
             ),
+            UrlMap(
+                name='result',
+                url='uit-plus-tutorial/result/{job_id}',
+                controller='uit_plus_tutorial.controllers.result'
+            ),
         )
 
         return url_maps

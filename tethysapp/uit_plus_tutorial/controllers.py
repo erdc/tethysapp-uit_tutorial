@@ -87,6 +87,7 @@ def status(request):
     jobs_table = JobsTable(
         jobs=jobs,
         column_fields=('id', 'name', 'description', 'creation_time'),
+        results_url='uit_plus_tutorial:result',
         run_btn=False,
         hover=False,
         striped=True,
@@ -101,3 +102,44 @@ def status(request):
     }
 
     return render(request, 'uit_plus_tutorial/status.html', context)
+
+
+@ensure_oauth2(app.PROVIDER_NAME)
+def result(request, job_id):
+    # Using job manager to get the specified job.
+    job_manager = app.get_job_manager()
+    job = job_manager.get_job(job_id=job_id)
+
+    # Get result and Key
+    name = job.name
+    results = {}
+    for file in job.transfer_output_files:
+        path = os.path.join(job._local_transfer_dir, file)
+        with open(path) as f:
+            results[file] = f.read()
+
+    home_button = Button(
+        display_text='Home',
+        name='home_button',
+        attributes={
+            'data-toggle': 'tooltip',
+            'data-placement': 'top',
+            'title': 'Home'
+        },
+        href=reverse('uit_plus_tutorial:home')
+    )
+
+    jobs_button = Button(
+        display_text='Show All Jobs',
+        name='jobs_button',
+        attributes={
+            'data-toggle': 'tooltip',
+            'data-placement': 'top',
+            'title': 'Show All Jobs'
+        },
+        href=reverse('uit_plus_tutorial:status')
+    )
+
+    context = {'results': results, 'job': job, 'home_button': home_button, 'jobs_button': jobs_button}
+
+    return render(request, 'uit_plus_tutorial/results.html', context)
