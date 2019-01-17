@@ -1,5 +1,6 @@
 import os
 import datetime as dt
+import uuid
 from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from tethys_sdk.gizmos import Button, JobsTable
@@ -43,6 +44,10 @@ def run_job(request):
     app_workspace = app.get_app_workspace()
     test_job_in = os.path.join(app_workspace.path, 'test_job.in')
 
+    # Job workspace
+    job_id = uuid.uuid4()
+    job_workspace = os.path.join(app_workspace.path, 'jobs', str(job_id))
+
     uit_plus_tutorial_dir = os.path.dirname(__file__)
     job_script = os.path.join(uit_plus_tutorial_dir, 'job_scripts', 'job_script.py')
 
@@ -50,7 +55,7 @@ def run_job(request):
     job_manager = app.get_job_manager()
 
     job = job_manager.create_job(
-        name='TestUitJob',
+        name='TestUitJob-{}'.format(job_id),
         user=request.user,
         job_type=UitPlusJob,
         project_id=project_id,
@@ -59,11 +64,16 @@ def run_job(request):
         num_nodes=1,
         processes_per_node=1,
         queue='debug',
+        workspace=job_workspace,
         max_time=dt.timedelta(minutes=5),
         max_cleanup_time=dt.timedelta(minutes=5),
         job_script=job_script,
+        home_input_files=['getMe.home'],
+        home_output_files=['test_job.out'],
+        archive_input_files=['getMe.archive'],
+        archive_output_files=['test_job.out'],
         transfer_input_files=[test_job_in, ],
-        transfer_output_files=['test_job.out']
+        transfer_output_files=['test_job.out', 'getMe.home', 'getMe.archive']
     )
     try:
         job.execute()
@@ -114,7 +124,7 @@ def result(request, job_id):
     name = job.name
     results = {}
     for file in job.transfer_output_files:
-        path = os.path.join(job._local_transfer_dir, file)
+        path = os.path.join(job.workspace, file)
         with open(path) as f:
             results[file] = f.read()
 
