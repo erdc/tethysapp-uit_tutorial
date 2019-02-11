@@ -32,6 +32,7 @@ def home(request):
 
     return render(request, 'uit_plus_tutorial/home.html', context)
 
+
 @ensure_oauth2(app.PROVIDER_NAME)
 def run_job(request):
     """
@@ -73,7 +74,7 @@ def run_job(request):
         archive_input_files=['getMe.archive'],
         archive_output_files=['test_job.out'],
         transfer_input_files=[test_job_in, ],
-        transfer_output_files=['test_job.out', 'getMe.home', 'getMe.archive']
+        transfer_output_files=['test_job.out', 'getMe.home', 'getMe.archive', 'nonexistant.file']
     )
     try:
         job.execute()
@@ -125,8 +126,11 @@ def result(request, job_id):
     results = {}
     for file in job.transfer_output_files:
         path = os.path.join(job.workspace, file)
-        with open(path) as f:
-            results[file] = f.read()
+        try:
+            with open(path) as f:
+                results[file] = f.read()
+        except FileNotFoundError:
+            results[file] = "ERROR: File Not Found!"
 
     home_button = Button(
         display_text='Home',
