@@ -74,6 +74,7 @@ def run_job(request):
         archive_input_files=['getMe.archive'],
         archive_output_files=['test_job.out'],
         transfer_input_files=[test_job_in, ],
+        transfer_intermediate_files=['interim.out'],
         transfer_output_files=['test_job.out', 'getMe.home', 'getMe.archive', 'nonexistant.file']
     )
     try:
