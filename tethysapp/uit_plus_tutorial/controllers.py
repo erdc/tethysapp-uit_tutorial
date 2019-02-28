@@ -118,6 +118,15 @@ def status(request):
 
 @ensure_oauth2(app.PROVIDER_NAME)
 def result(request, job_id):
+    """Display the results of a job
+
+    Args:
+        request: The request object
+        job_id: The id of the job for which to display results
+
+    Returns:
+        Nothing
+    """
     # Using job manager to get the specified job.
     job_manager = app.get_job_manager()
     job = job_manager.get_job(job_id=job_id)
