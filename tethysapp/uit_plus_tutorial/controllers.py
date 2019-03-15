@@ -69,9 +69,9 @@ def run_job(request):
         max_time=dt.timedelta(minutes=5),
         max_cleanup_time=dt.timedelta(minutes=5),
         job_script=job_script,
-        home_input_files=['getMe.home'],
+        home_input_files=['getMe.home'],  # NOTE: You must add this file to your HOME directory manually for this to work
         home_output_files=['test_job.out'],
-        archive_input_files=['getMe.archive'],
+        archive_input_files=['getMe.archive'],  # NOTE: You must add this file to your ARCHIVE_HOME directory manually for this to work
         archive_output_files=['test_job.out'],
         transfer_input_files=[test_job_in, ],
         transfer_intermediate_files=['interim.out'],
